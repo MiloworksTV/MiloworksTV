@@ -1,0 +1,56 @@
+# Master character reference sheets for the Milo series.
+#
+# `milo characters <slug>` reads this (via the symlink in each episode
+# folder) and generates one PNG per character into
+# episodes/<slug>/characters/<id>.png. Those PNGs are then used as
+# reference_images in scenes with mode=reference.
+#
+# Every prompt is combined with the master style_bible.md prefix at
+# generation time, so don't repeat style boilerplate here.
+
+aspect_ratio: "1:1"
+resolution: "1k"
+
+characters:
+  - id: milo
+    prompt: >-
+      SOLO CHARACTER REFERENCE SHEET — MILO ALONE IN FRAME, no other
+      characters, no humans, no girls, no second blob. Just MILO
+      centered on a clean neutral off-white background.
+
+      MILO: small mint-green teardrop-shaped alien blob, about
+      knee-height. Body color neon mint green (#7BE3B2) with a thin
+      darker green outline and a gentle soft mint glow. Two wobbly
+      antennae on top, each with a tiny round tip. One large round
+      expressive eye centered high on the body, taking up most of his
+      upper third, with a sparkly black pupil. Thin expressive cartoon
+      eyebrows. No visible mouth by default. No arms and no legs in
+      the default form — he glides on his rounded base. A few small
+      sparkle particles drift nearby.
+
+      Clean 2D cartoon, thick bold black outlines, chunky simple
+      shapes, flat saturated colors, Adventure Time / Pocoyo
+      aesthetic. Full-body pose facing camera, slight curious lean.
+
+    voice: "high squeaky voice that cracks when stretched, drops to a warm low reverb when he merges with an idea"
+
+  - id: pip
+    prompt: >-
+      SOLO CHARACTER REFERENCE SHEET — PIP ALONE IN FRAME, no other
+      characters, no blobs, no aliens. Just PIP centered on a clean
+      neutral off-white background.
+
+      PIP is a 9-year-old human girl facing the camera, holding a
+      small juice box with a bendy straw in her right hand. Short
+      chunky cartoon proportions. Messy shoulder-length chocolate
+      brown hair pulled into a loose ponytail, a few stray strands.
+      Horizontally striped t-shirt in soft pastel stripes (mint,
+      cream, coral). Plain denim shorts. Bare feet. Deadpan
+      half-lidded brown eyes, tiny pink blush circles on her cheeks,
+      unimpressed mouth. Relaxed posture, one hand at her side.
+
+      Thick bold black outlines matching Milo, chunky simple shapes,
+      flat saturated colors, Adventure Time / Pocoyo aesthetic.
+      Full-body pose facing camera.
+
+    voice: "calm, slightly bored 9-year-old girl, dry deadpan monotone, loud deliberate juice-box slurps"

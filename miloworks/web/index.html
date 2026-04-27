@@ -1,0 +1,312 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>MiloWorks</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script defer src="https://unpkg.com/alpinejs@3.14.1/dist/cdn.min.js"></script>
+  <style>
+    :root {
+      color-scheme: dark;
+    }
+    body {
+      background: #0c0d10;
+      color: #e6e6e6;
+      font-family:
+        ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto,
+        "Helvetica Neue", Arial, sans-serif;
+    }
+    .mint { color: #7eecaa; }
+    [x-cloak] { display: none !important; }
+    pre { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; }
+    /* hide chrome's "details" marker triangle */
+    summary::-webkit-details-marker { display: none; }
+  </style>
+</head>
+<body class="min-h-screen">
+  <div x-data="studio()" x-init="init()" x-cloak class="max-w-7xl mx-auto p-6">
+
+    <header class="flex items-center justify-between mb-8 gap-4">
+      <button @click="back()" class="text-left hover:opacity-80 min-w-0">
+        <div class="text-2xl font-semibold tracking-tight">
+          <span class="mint">Milo</span><span class="text-neutral-200">Works</span>
+        </div>
+        <div x-show="project" class="text-xs text-neutral-500 font-mono truncate"
+             x-text="project ? 'project: ' + project.name : ''"></div>
+      </button>
+      <div class="flex items-center gap-3 text-sm shrink-0">
+        <span class="text-neutral-500">backend</span>
+        <select x-model="backend" @change="onBackendChange()"
+                class="bg-neutral-900 border border-neutral-800 rounded px-2 py-1">
+          <option value="xai">xai</option>
+          <option value="fal">fal</option>
+          <option value="wan">wan</option>
+        </select>
+      </div>
+    </header>
+
+    <!-- ============== EPISODE LIST ============== -->
+    <section x-show="!current" class="space-y-3">
+      <h2 class="text-sm uppercase tracking-wider text-neutral-500 mb-2">Episodes</h2>
+      <template x-if="episodes.length === 0">
+        <div class="bg-neutral-900 border border-neutral-800 rounded-lg p-6 text-sm text-neutral-400">
+          No episodes yet. Create one at
+          <code class="text-neutral-200">episodes/&lt;slug&gt;/manifest.yaml</code>
+          (or copy from the example) and refresh.
+        </div>
+      </template>
+      <template x-for="ep in episodes" :key="ep.slug">
+        <button @click="open(ep.slug)"
+                class="block w-full text-left bg-neutral-900 hover:bg-neutral-800/80
+                       border border-neutral-800 rounded-lg p-4 transition">
+          <div class="flex items-baseline justify-between gap-4 mb-1">
+            <div class="font-medium" x-text="ep.title"></div>
+            <div class="text-xs text-neutral-500 shrink-0"
+                 x-text="[ep.weekday, ep.bucket].filter(Boolean).join(' \u00b7 ')"></div>
+          </div>
+          <div class="text-sm text-neutral-400 line-clamp-2" x-text="ep.logline"></div>
+          <div class="text-xs text-neutral-600 mt-1 font-mono" x-text="ep.slug"></div>
+        </button>
+      </template>
+    </section>
+
+    <!-- ============== DAY EDITOR ============== -->
+    <section x-show="current">
+      <div class="flex items-start justify-between mb-6 gap-4">
+        <div class="min-w-0">
+          <h2 class="text-xl font-medium" x-text="current?.title"></h2>
+          <p class="text-sm text-neutral-400 mt-1" x-text="current?.logline"></p>
+          <p class="text-xs text-neutral-600 mt-1 font-mono" x-text="current?.slug"></p>
+        </div>
+        <div class="flex flex-col items-end gap-2 shrink-0">
+          <button @click="stitch()"
+                  :disabled="anyJobActive() || !allRendered()"
+                  class="px-3 py-2 bg-neutral-900 border border-neutral-800 rounded text-sm
+                         hover:bg-neutral-800 disabled:opacity-40 disabled:cursor-not-allowed">
+            stitch episode
+          </button>
+          <span x-show="current?.final_stale"
+                class="text-xs text-amber-400">final.mp4 is stale</span>
+        </div>
+      </div>
+
+      <!-- Final video -->
+      <div x-show="current?.final_rendered" class="mb-8">
+        <div class="text-xs uppercase tracking-wider text-neutral-500 mb-2">final</div>
+        <video controls class="w-full rounded-lg border border-neutral-800" :src="finalUrl()"></video>
+      </div>
+
+      <!-- Scene grid -->
+      <div class="text-xs uppercase tracking-wider text-neutral-500 mb-2">scenes</div>
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+        <template x-for="s in current?.scenes || []" :key="s.id">
+          <div class="bg-neutral-900 border border-neutral-800 rounded-lg p-3 flex flex-col">
+            <div class="flex items-center justify-between mb-3">
+              <div class="font-mono text-sm">
+                <span class="text-neutral-200">#<span x-text="s.id"></span></span>
+                <span class="text-neutral-500" x-text="' \u00b7 ' + s.mode + ' \u00b7 ' + s.duration + 's'"></span>
+              </div>
+              <span class="text-xs px-2 py-0.5 rounded font-mono"
+                    :class="statusClass(s)"
+                    x-text="statusLabel(s)"></span>
+            </div>
+
+            <!-- Video / placeholder -->
+            <template x-if="s.rendered">
+              <video controls preload="metadata"
+                     class="w-full rounded border border-neutral-800 mb-2 aspect-video bg-black"
+                     :src="videoUrl(s)"></video>
+            </template>
+            <template x-if="!s.rendered">
+              <div class="aspect-video bg-neutral-950 border border-dashed border-neutral-800
+                          rounded flex items-center justify-center text-neutral-600 text-sm mb-2">
+                not rendered
+              </div>
+            </template>
+
+            <!-- Seed thumbnail -->
+            <div x-show="s.seed_exists" class="flex items-center gap-2 mb-2 text-xs text-neutral-500">
+              <img :src="seedUrl(s)"
+                   class="w-16 aspect-video object-cover rounded border border-neutral-800" />
+              <span>seed: <span class="font-mono text-neutral-400"
+                                x-text="s.image_from || 'image'"></span></span>
+            </div>
+
+            <!-- Prompt -->
+            <details class="mb-3 text-sm">
+              <summary class="text-xs text-neutral-500 cursor-pointer select-none
+                              hover:text-neutral-300">prompt &amp; audio</summary>
+              <pre class="mt-2 p-2 bg-neutral-950 rounded text-xs whitespace-pre-wrap
+                          text-neutral-300 max-h-60 overflow-auto" x-text="s.prompt"></pre>
+              <pre x-show="s.audio" class="mt-1 p-2 bg-neutral-950 rounded text-xs whitespace-pre-wrap
+                          text-amber-200/70 max-h-40 overflow-auto" x-text="s.audio"></pre>
+            </details>
+
+            <button @click="reroll(s.id)"
+                    :disabled="anyJobActive()"
+                    class="mt-auto w-full px-3 py-2 bg-neutral-800 border border-neutral-700
+                           rounded text-sm hover:bg-neutral-700 disabled:opacity-40
+                           disabled:cursor-not-allowed">
+              <span x-text="s.rendered ? 're-render' : 'render'"></span>
+            </button>
+          </div>
+        </template>
+      </div>
+    </section>
+
+    <!-- ============== JOB TRAY ============== -->
+    <div x-show="activeJob"
+         class="fixed bottom-4 right-4 bg-neutral-900 border border-neutral-700
+                rounded-lg p-3 max-w-sm shadow-xl">
+      <div class="flex items-center gap-2 mb-1">
+        <span class="inline-block w-2 h-2 rounded-full"
+              :class="{
+                'bg-amber-400 animate-pulse': activeJob?.status === 'running',
+                'bg-neutral-500': activeJob?.status === 'queued',
+                'bg-emerald-400': activeJob?.status === 'done',
+                'bg-red-400': activeJob?.status === 'error',
+              }"></span>
+        <span class="text-sm font-medium font-mono"
+              x-text="(activeJob?.kind || '') + (activeJob?.scene_id ? ' #' + activeJob.scene_id : '')"></span>
+      </div>
+      <div class="text-xs text-neutral-400" x-text="activeJob?.status + ' · ' + (activeJob?.slug || '')"></div>
+      <div x-show="activeJob?.error"
+           class="text-xs text-red-400 mt-2 max-h-32 overflow-auto whitespace-pre-wrap"
+           x-text="activeJob?.error"></div>
+    </div>
+  </div>
+
+  <script>
+    function studio() {
+      return {
+        backend: localStorage.getItem('miloworks:backend') || 'xai',
+        project: null,
+        episodes: [],
+        current: null,
+        activeJob: null,
+        _pollTimer: null,
+
+        async init() {
+          await this.loadProject();
+          await this.loadEpisodes();
+          this._pollTimer = setInterval(() => this.tick(), 2000);
+        },
+
+        async loadProject() {
+          try {
+            this.project = await fetch('/api/project').then(r => r.json());
+          } catch (e) {
+            this.project = null;
+          }
+        },
+
+        async tick() {
+          try {
+            const jobs = await fetch('/api/jobs?limit=10').then(r => r.json());
+            // Surface anything in flight, or a recent error/done for ~5s.
+            const active = jobs.find(j => j.status === 'running' || j.status === 'queued');
+            const recent = jobs.find(j =>
+              (j.status === 'error' || j.status === 'done') &&
+              j.finished_at && (Date.now() / 1000 - j.finished_at) < 5
+            );
+            this.activeJob = active || recent || null;
+            if (this.current && (active || recent)) {
+              await this.refreshCurrent();
+            }
+          } catch (e) {
+            // Server might be restarting — quietly ignore one tick.
+          }
+        },
+
+        anyJobActive() {
+          return !!this.activeJob &&
+                 (this.activeJob.status === 'running' || this.activeJob.status === 'queued');
+        },
+
+        allRendered() {
+          return this.current?.scenes?.every(s => s.rendered);
+        },
+
+        onBackendChange() {
+          localStorage.setItem('miloworks:backend', this.backend);
+          if (this.current) this.refreshCurrent();
+        },
+
+        async loadEpisodes() {
+          this.episodes = await fetch('/api/episodes').then(r => r.json());
+        },
+
+        async open(slug) {
+          this.current = await fetch(
+            `/api/episodes/${slug}?backend=${this.backend}`
+          ).then(r => r.json());
+        },
+
+        async refreshCurrent() {
+          if (!this.current) return;
+          this.current = await fetch(
+            `/api/episodes/${this.current.slug}?backend=${this.backend}`
+          ).then(r => r.json());
+        },
+
+        back() {
+          this.current = null;
+          this.loadEpisodes();
+        },
+
+        async reroll(scene_id) {
+          await fetch(
+            `/api/episodes/${this.current.slug}/scenes/${scene_id}/render`,
+            {
+              method: 'POST',
+              headers: { 'content-type': 'application/json' },
+              body: JSON.stringify({ backend: this.backend }),
+            }
+          );
+          this.tick();
+        },
+
+        async stitch() {
+          await fetch(`/api/episodes/${this.current.slug}/stitch`, {
+            method: 'POST',
+            headers: { 'content-type': 'application/json' },
+            body: JSON.stringify({ backend: this.backend }),
+          });
+          this.tick();
+        },
+
+        statusLabel(s) {
+          if (this.activeJob?.scene_id === s.id) return this.activeJob.status;
+          if (s.rendered) return 'rendered';
+          return 'pending';
+        },
+
+        statusClass(s) {
+          const lbl = this.statusLabel(s);
+          if (lbl === 'rendered') return 'bg-emerald-950 text-emerald-300 border border-emerald-900';
+          if (lbl === 'running' || lbl === 'queued')
+            return 'bg-amber-950 text-amber-300 border border-amber-900';
+          if (lbl === 'error') return 'bg-red-950 text-red-300 border border-red-900';
+          return 'bg-neutral-800 text-neutral-400 border border-neutral-700';
+        },
+
+        videoUrl(s) {
+          return `/api/episodes/${this.current.slug}/scenes/${s.id}/video`
+               + `?backend=${this.backend}&v=${s.video_mtime || 0}`;
+        },
+
+        seedUrl(s) {
+          return `/api/episodes/${this.current.slug}/scenes/${s.id}/seed`
+               + `?backend=${this.backend}`;
+        },
+
+        finalUrl() {
+          return `/api/episodes/${this.current.slug}/final`
+               + `?backend=${this.backend}&v=${this.current.final_mtime || 0}`;
+        },
+      };
+    }
+  </script>
+</body>
+</html>

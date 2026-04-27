@@ -1,0 +1,383 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Milo — a daily silent cartoon · MiloWorks Studios</title>
+  <meta name="description" content="Milo: a daily 60-second silent cartoon about a shapeshifting alien blob, made with MiloWorks — an open-source pipeline for prompt-driven animation." />
+
+  <meta property="og:title" content="Milo — a daily silent cartoon" />
+  <meta property="og:description" content="A daily 60-second silent cartoon, one year long. Every frame chained to the last. Made with MiloWorks." />
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://miloworks.tv" />
+  <meta property="og:image" content="https://miloworks.tv/banner.png" />
+  <meta property="og:image:width" content="1255" />
+  <meta property="og:image:height" content="713" />
+  <meta property="og:image:alt" content="Milo, a small mint-green alien blob, stands beside a young girl in her sunlit backyard. A heart-shaped thought bubble floats above him." />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:site" content="@MiloWorksTV" />
+  <meta name="twitter:image" content="https://miloworks.tv/banner.png" />
+  <meta name="twitter:image:alt" content="Milo, a small mint-green alien blob, stands beside a young girl in her sunlit backyard. A heart-shaped thought bubble floats above him." />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,700;9..144,900&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+
+  <style>
+    :root {
+      --bg: #fbf6ee;
+      --bg-soft: #f3ebdc;
+      --ink: #1a1715;
+      --ink-soft: #4a423b;
+      --mint: #7eecaa;
+      --peach: #ffb88c;
+      --lavender: #c4b5fd;
+      --coral: #fb7185;
+    }
+    html, body { background: var(--bg); color: var(--ink); }
+    body {
+      font-family: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+      font-feature-settings: 'cv11', 'ss01', 'ss03';
+      -webkit-font-smoothing: antialiased;
+      text-rendering: optimizeLegibility;
+    }
+    * { box-sizing: border-box; }
+    a { color: inherit; text-decoration: none; }
+    h1, h2, h3, h4, p { margin: 0; }
+    img, video { display: block; max-width: 100%; }
+    .display { font-family: 'Fraunces', Georgia, 'Times New Roman', serif; font-feature-settings: 'ss01'; letter-spacing: -0.02em; }
+    .display-tight { letter-spacing: -0.04em; }
+    .ink-soft { color: var(--ink-soft); }
+    .mint-bg { background: var(--mint); }
+    .grain {
+      position: relative;
+    }
+    .grain::after {
+      content: "";
+      position: absolute; inset: 0;
+      pointer-events: none;
+      background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='160' height='160'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  0 0 0 0.06 0'/></filter><rect width='100%25' height='100%25' filter='url(%23n)'/></svg>");
+      mix-blend-mode: multiply;
+      opacity: 0.5;
+    }
+    [x-cloak] { display: none !important; }
+
+    /* Tailwind-style utilities used inline below — included so we don't
+       depend on the Tailwind CDN at runtime (faster + no FOUC). */
+    .max-w-6xl { max-width: 72rem; }
+    .max-w-3xl { max-width: 48rem; }
+    .max-w-2xl { max-width: 42rem; }
+    .max-w-xl { max-width: 36rem; }
+    .mx-auto { margin-left: auto; margin-right: auto; }
+    .px-5 { padding-left: 1.25rem; padding-right: 1.25rem; }
+    .px-6 { padding-left: 1.5rem; padding-right: 1.5rem; }
+    .px-8 { padding-left: 2rem; padding-right: 2rem; }
+    .py-4 { padding-top: 1rem; padding-bottom: 1rem; }
+    .py-6 { padding-top: 1.5rem; padding-bottom: 1.5rem; }
+    .py-12 { padding-top: 3rem; padding-bottom: 3rem; }
+    .py-16 { padding-top: 4rem; padding-bottom: 4rem; }
+    .py-24 { padding-top: 6rem; padding-bottom: 6rem; }
+    .pt-32 { padding-top: 8rem; }
+    .pb-16 { padding-bottom: 4rem; }
+    .mb-2 { margin-bottom: 0.5rem; }
+    .mb-3 { margin-bottom: 0.75rem; }
+    .mb-4 { margin-bottom: 1rem; }
+    .mb-6 { margin-bottom: 1.5rem; }
+    .mb-8 { margin-bottom: 2rem; }
+    .mb-10 { margin-bottom: 2.5rem; }
+    .mb-12 { margin-bottom: 3rem; }
+    .mt-2 { margin-top: 0.5rem; }
+    .mt-4 { margin-top: 1rem; }
+    .mt-6 { margin-top: 1.5rem; }
+    .mt-8 { margin-top: 2rem; }
+    .flex { display: flex; }
+    .grid { display: grid; }
+    .items-center { align-items: center; }
+    .items-end { align-items: flex-end; }
+    .justify-between { justify-content: space-between; }
+    .justify-center { justify-content: center; }
+    .gap-2 { gap: 0.5rem; }
+    .gap-3 { gap: 0.75rem; }
+    .gap-4 { gap: 1rem; }
+    .gap-6 { gap: 1.5rem; }
+    .gap-8 { gap: 2rem; }
+    .gap-12 { gap: 3rem; }
+    .grid-cols-1 { grid-template-columns: repeat(1, minmax(0, 1fr)); }
+    @media (min-width: 768px) {
+      .md\:grid-cols-2 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+      .md\:text-7xl { font-size: 4.5rem; line-height: 1; }
+      .md\:text-2xl { font-size: 1.5rem; line-height: 2rem; }
+      .md\:py-32 { padding-top: 8rem; padding-bottom: 8rem; }
+      .md\:flex-row { flex-direction: row; }
+      .md\:gap-16 { gap: 4rem; }
+    }
+    @media (min-width: 1024px) {
+      .lg\:grid-cols-3 { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+      .lg\:text-8xl { font-size: 6rem; line-height: 1; }
+    }
+    .text-sm { font-size: 0.875rem; line-height: 1.25rem; }
+    .text-base { font-size: 1rem; line-height: 1.5rem; }
+    .text-lg { font-size: 1.125rem; line-height: 1.75rem; }
+    .text-xl { font-size: 1.25rem; line-height: 1.75rem; }
+    .text-2xl { font-size: 1.5rem; line-height: 2rem; }
+    .text-3xl { font-size: 1.875rem; line-height: 2.25rem; }
+    .text-4xl { font-size: 2.25rem; line-height: 2.5rem; }
+    .text-5xl { font-size: 3rem; line-height: 1; }
+    .text-6xl { font-size: 3.75rem; line-height: 1; }
+    .font-medium { font-weight: 500; }
+    .font-semibold { font-weight: 600; }
+    .font-bold { font-weight: 700; }
+    .font-black { font-weight: 900; }
+    .uppercase { text-transform: uppercase; }
+    .tracking-wide { letter-spacing: 0.025em; }
+    .tracking-widest { letter-spacing: 0.1em; }
+    .leading-tight { line-height: 1.15; }
+    .leading-snug { line-height: 1.375; }
+    .leading-relaxed { line-height: 1.65; }
+    .text-center { text-align: center; }
+    .block { display: block; }
+    .inline-block { display: inline-block; }
+    .flex-col { flex-direction: column; }
+    .w-full { width: 100%; }
+    .h-full { height: 100%; }
+    .aspect-video { aspect-ratio: 16 / 9; }
+    .object-cover { object-fit: cover; }
+    .rounded-md { border-radius: 0.375rem; }
+    .rounded-lg { border-radius: 0.5rem; }
+    .rounded-2xl { border-radius: 1rem; }
+    .rounded-full { border-radius: 9999px; }
+    .border { border-width: 1px; }
+    .border-2 { border-width: 2px; }
+    .overflow-hidden { overflow: hidden; }
+    .relative { position: relative; }
+    .absolute { position: absolute; }
+    .inset-0 { inset: 0; }
+    .top-6 { top: 1.5rem; }
+    .left-6 { left: 1.5rem; }
+    .right-6 { right: 1.5rem; }
+    .bottom-6 { bottom: 1.5rem; }
+    .z-10 { z-index: 10; }
+    .opacity-70 { opacity: 0.7; }
+    .opacity-80 { opacity: 0.8; }
+    .pointer-events-none { pointer-events: none; }
+
+    .ep-card { transition: transform .2s ease, box-shadow .2s ease; }
+    .ep-card:hover { transform: translateY(-4px); box-shadow: 0 12px 30px rgba(20, 16, 12, 0.12); }
+    .ep-card video { transition: filter .3s ease; }
+
+    .pill {
+      display: inline-flex; align-items: center; gap: .4rem;
+      padding: .25rem .65rem; border-radius: 9999px;
+      background: var(--ink); color: var(--bg);
+      font-size: .75rem; font-weight: 600;
+      letter-spacing: 0.04em; text-transform: uppercase;
+    }
+    .btn-dark {
+      display: inline-flex; align-items: center; gap: .5rem;
+      padding: .85rem 1.5rem; border-radius: 9999px;
+      background: var(--ink); color: var(--bg);
+      font-weight: 600; transition: transform .15s ease, opacity .15s ease;
+    }
+    .btn-dark:hover { transform: translateY(-1px); opacity: .92; }
+    .btn-light {
+      display: inline-flex; align-items: center; gap: .5rem;
+      padding: .85rem 1.5rem; border-radius: 9999px;
+      background: var(--bg); color: var(--ink);
+      border: 2px solid var(--ink);
+      font-weight: 600; transition: transform .15s ease;
+    }
+    .btn-light:hover { transform: translateY(-1px); }
+
+    .nav-link { color: var(--ink); opacity: .75; transition: opacity .15s ease; }
+    .nav-link:hover { opacity: 1; }
+
+    .brand-suffix { display: none; }
+    @media (min-width: 560px) { .brand-suffix { display: inline; } }
+
+    @media (max-width: 480px) {
+      nav { gap: 1rem; }
+      nav a + a { margin-left: 0; }
+      .pt-32 { padding-top: 4rem; }
+      .py-24 { padding-top: 4rem; padding-bottom: 4rem; }
+    }
+  </style>
+  <script defer src="https://unpkg.com/alpinejs@3.14.1/dist/cdn.min.js"></script>
+</head>
+
+<body class="grain">
+  <div x-data="site()" x-init="init()" x-cloak>
+
+    <!-- ============ NAV ============ -->
+    <nav class="max-w-6xl mx-auto px-6 py-6 flex items-center justify-between">
+      <a href="#top" class="flex items-center gap-3">
+        <span class="block" style="width: 1.4rem; height: 1.4rem; border-radius: 50%; background: var(--mint); border: 2px solid var(--ink); flex-shrink: 0;"></span>
+        <span class="display font-bold text-xl" style="white-space: nowrap;">MiloWorks<span class="brand-suffix ink-soft" style="font-weight: 500;"> Studios</span></span>
+      </a>
+      <div class="flex items-center gap-6 text-sm font-medium">
+        <a class="nav-link" href="#episodes">Episodes</a>
+        <a class="nav-link" href="#about">About</a>
+        <a class="nav-link" href="#engine">Open source</a>
+      </div>
+    </nav>
+
+    <!-- ============ HERO ============ -->
+    <header id="top" class="max-w-6xl mx-auto px-6 pt-32 pb-16">
+      <div class="pill mb-8" x-text="show.tagline_kicker || 'A daily silent cartoon'"></div>
+
+      <h1 class="display display-tight font-black text-6xl md:text-7xl lg:text-8xl leading-tight mb-6"
+          x-text="show.name || 'Milo'"></h1>
+
+      <p class="display font-medium text-2xl md:text-2xl ink-soft leading-snug max-w-3xl mb-12"
+         x-text="show.tagline"></p>
+
+      <!-- Latest episode video -->
+      <div class="relative rounded-2xl overflow-hidden border-2"
+           style="border-color: var(--ink); background: #000;"
+           x-show="latest()">
+        <video class="w-full aspect-video object-cover"
+               :src="latest()?.video"
+               :poster="latest()?.poster"
+               controls
+               playsinline
+               preload="metadata"></video>
+        <div class="absolute top-6 left-6 pill" style="background: var(--mint); color: var(--ink); border: 2px solid var(--ink);">
+          Latest · <span x-text="latest()?.title"></span>
+        </div>
+      </div>
+
+      <template x-if="!latest()">
+        <div class="rounded-2xl border-2 aspect-video flex items-center justify-center"
+             style="border-color: var(--ink); background: var(--bg-soft);">
+          <p class="ink-soft display text-xl">First episode coming soon.</p>
+        </div>
+      </template>
+    </header>
+
+    <!-- ============ ALL EPISODES ============ -->
+    <section id="episodes" class="max-w-6xl mx-auto px-6 py-24">
+      <div class="flex items-end justify-between mb-12 gap-6">
+        <h2 class="display font-bold text-4xl md:text-5xl leading-tight">All episodes</h2>
+        <span class="text-sm ink-soft" x-text="episodes.length + (episodes.length === 1 ? ' episode' : ' episodes')"></span>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+        <template x-for="ep in episodes" :key="ep.slug">
+          <article class="ep-card rounded-2xl overflow-hidden border-2" style="border-color: var(--ink); background: var(--bg-soft);">
+            <a :href="'#ep-' + ep.slug" :id="'ep-' + ep.slug">
+              <div class="relative">
+                <video class="w-full aspect-video object-cover"
+                       :src="ep.video"
+                       :poster="ep.poster"
+                       controls
+                       playsinline
+                       preload="none"></video>
+              </div>
+              <div class="px-5 py-6">
+                <div class="flex items-center gap-3 mb-3">
+                  <span class="pill" x-text="dayLabel(ep)"></span>
+                  <span class="text-xs ink-soft uppercase tracking-widest" x-show="ep.weekday" x-text="ep.weekday"></span>
+                </div>
+                <h3 class="display font-bold text-2xl leading-snug mb-3" x-text="cleanTitle(ep.title)"></h3>
+                <p class="ink-soft text-base leading-relaxed" x-text="ep.logline"></p>
+              </div>
+            </a>
+          </article>
+        </template>
+      </div>
+    </section>
+
+    <!-- ============ ABOUT ============ -->
+    <section id="about" class="py-24" style="background: var(--ink); color: var(--bg);">
+      <div class="max-w-3xl mx-auto px-6">
+        <div class="display font-bold text-sm uppercase tracking-widest mb-6" style="color: var(--mint);">About the show</div>
+        <h2 class="display display-tight font-black text-4xl md:text-7xl leading-tight mb-10"
+            x-text="show.name + ' is a slow show.'"></h2>
+        <div class="display text-xl md:text-2xl leading-relaxed" style="color: rgba(251, 246, 238, 0.85);">
+          <template x-for="para in (show.description || '').split('\n\n')" :key="para">
+            <p class="mb-6" x-text="para"></p>
+          </template>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ MADE WITH ============ -->
+    <section id="engine" class="max-w-6xl mx-auto px-6 py-24">
+      <div class="rounded-2xl border-2 px-8 py-16 md:py-32"
+           style="border-color: var(--ink); background: var(--mint); position: relative; overflow: hidden;">
+        <div class="display font-bold text-sm uppercase tracking-widest mb-6">Open source</div>
+        <h2 class="display display-tight font-black text-4xl md:text-7xl leading-tight mb-8 max-w-3xl">
+          The whole show was made with MiloWorks.
+        </h2>
+        <p class="display text-xl md:text-2xl leading-snug ink-soft max-w-2xl mb-10">
+          A small open-source pipeline for prompt-driven cartoon series.
+          Manifest-driven. Frame-chained. MIT licensed. Bring your own
+          API key, make your own show.
+        </p>
+        <div class="flex flex-col md:flex-row gap-4">
+          <a class="btn-dark" href="https://github.com/MiloworksTV/MiloworksTV" target="_blank" rel="noopener">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0a12 12 0 0 0-3.79 23.4c.6.11.82-.26.82-.58v-2c-3.34.73-4.04-1.42-4.04-1.42-.55-1.39-1.34-1.76-1.34-1.76-1.09-.74.08-.73.08-.73 1.2.08 1.84 1.24 1.84 1.24 1.07 1.84 2.81 1.31 3.5 1 .1-.78.42-1.31.76-1.61-2.66-.3-5.46-1.33-5.46-5.93 0-1.31.46-2.38 1.23-3.22-.12-.3-.54-1.52.12-3.18 0 0 1-.32 3.3 1.23a11.4 11.4 0 0 1 6 0c2.3-1.55 3.3-1.23 3.3-1.23.66 1.66.24 2.88.12 3.18.77.84 1.23 1.91 1.23 3.22 0 4.61-2.81 5.62-5.48 5.92.43.37.81 1.1.81 2.22v3.29c0 .32.22.7.83.58A12 12 0 0 0 12 0z"/></svg>
+            Star on GitHub
+          </a>
+          <a class="btn-light" href="https://github.com/MiloworksTV/MiloworksTV#quick-start" target="_blank" rel="noopener">
+            Read the quickstart →
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ FOOTER ============ -->
+    <footer class="max-w-6xl mx-auto px-6 py-12 flex flex-col md:flex-row gap-4 items-center justify-between">
+      <div class="text-sm ink-soft">
+        © <span x-text="new Date().getFullYear()"></span> MiloWorks Studios · All episodes generated with MiloWorks (open source).
+      </div>
+      <div class="flex items-center gap-6 text-sm">
+        <a class="nav-link" href="https://x.com/MiloWorksTV" target="_blank" rel="noopener">X / @MiloWorksTV</a>
+        <a class="nav-link" href="https://github.com/MiloworksTV/MiloworksTV" target="_blank" rel="noopener">GitHub</a>
+      </div>
+    </footer>
+  </div>
+
+  <script>
+    function site() {
+      return {
+        show: { name: 'Milo', tagline: 'Loading…', description: '' },
+        episodes: [],
+        async init() {
+          try {
+            const data = await fetch('episodes.json', { cache: 'no-store' }).then(r => r.json());
+            this.show = data.show || this.show;
+            this.episodes = data.episodes || [];
+          } catch (e) {
+            this.show = {
+              name: 'Milo',
+              tagline: 'A daily 60-second silent cartoon. One year. 365 episodes. Every frame chained to the last.',
+              description: 'Run `miloworks publish` from the engine repo to populate this site.'
+            };
+            this.episodes = [];
+          }
+        },
+        latest() { return this.episodes[0] || null; },
+        dayLabel(ep) {
+          if (ep.day != null) {
+            return ep.day === 0 ? 'Pilot' : 'Day ' + ep.day;
+          }
+          const m = (ep.slug || '').match(/^(ep|day)[-_]?(\d+)/i);
+          if (m) {
+            const n = parseInt(m[2], 10);
+            if (m[1].toLowerCase() === 'ep') return n === 0 ? 'Pilot' : 'Episode ' + n;
+            return 'Day ' + n;
+          }
+          return ep.slug;
+        },
+        cleanTitle(t) {
+          // "Milo -- Day 1: Patience" → "Patience"
+          if (!t) return '';
+          const parts = String(t).split(/:\s*/);
+          if (parts.length > 1) return parts[parts.length - 1].trim();
+          return t;
+        },
+      };
+    }
+  </script>
+</body>
+</html>

@@ -1,0 +1,194 @@
+slug: day-001-patience
+title: "Milo -- Day 1: Patience"
+logline: >-
+  The next morning. Pip points; Milo cannot wait. He stretches across
+  the lawn -- and then holds perfectly still while a yellow leaf falls
+  past him. Waiting is staying still while the world keeps going.
+aspect_ratio: "16:9"
+resolution: "720p"
+
+# Cross-episode chain. Shot 01 seeds from the prev episode's handoff
+# frame: shot 05 of ep00 (Milo alone on the lawn at deep twilight,
+# magazine on the grass, sliding door closed, Pip inside). The night
+# passes; we pick up the next morning.
+prev_episode: ep00-the-landing
+handoff_scene: "06"
+
+# Show theme.
+music:
+  track: satie-gymnopedie-1
+  volume_db: -2
+  fade_in_s: 1.5
+  fade_out_s: 3.0
+
+# Operational metadata for the writers' room (not read by the runner).
+day: 1
+weekday: Mon
+bucket: feelings
+concept: Patience
+form_drift_state: >-
+  Default mint-green teardrop, no drift yet -- first daily episode,
+  drift schedule begins at Day 10.
+
+scenes:
+
+  # ============ COLD OPEN ============
+
+  - id: "01"
+    mode: image
+    image_from: "_prev_episode"
+    duration: 10
+    prompt: >-
+      The next morning. Same suburban backyard, same blue kiddie
+      pool, white picket fence, ceramic garden gnome, striped
+      lawn chair, beige house with a closed sliding glass door
+      (no TV flicker -- too early). Sky has shifted from deep
+      twilight to soft golden early-morning light, dew sparkles
+      on the grass, faint mist around the gnome. MILO is in his
+      default form (small mint-green teardrop, two wobbly
+      antennae, one large expressive eye, NO MOUTH, no drift)
+      sitting peacefully on the lawn beside the kiddie pool --
+      exactly where the night left him. The 'HOW TO BE HUMAN
+      (SORT OF)' magazine still lies open on the grass at the
+      far left. He gives one slow blink and a small idle
+      antenna-twitch. MOUTH STAYS CLOSED. Medium shot, camera
+      locked.
+    audio: >-
+      Early-morning suburban ambience: birds chirping softly,
+      faint sprinkler far off, one distant dog. NO VOICES. NO
+      DIALOGUE.
+
+  # ============ CONCEPT HOOK ============
+  # Pip arrives + Milo wonders, fused into one shot via a
+  # ?-bubble pop above Milo while Pip's gesture lands.
+
+  - id: "02"
+    mode: image
+    image_from: "01"
+    duration: 10
+    prompt: >-
+      Same backyard, same soft golden morning light. Camera has
+      widened slightly to include the patio. Sliding glass door
+      now fully OPEN. PIP stands on the patio in a clean stable
+      pose: chocolate-brown ponytail, striped pastel t-shirt,
+      denim shorts, bare feet, deadpan brown eyes, MOUTH CLOSED,
+      juice box in right hand. With her free left hand she makes
+      one slow deliberate gesture: open palm raised toward MILO
+      at chest height in the universal 'wait, hold up' signal,
+      then lowers it. PIP'S MOUTH STAYS CLOSED. MILO turns his
+      big eye toward her, and a small mint-green cartoon
+      thought-bubble pops above his head containing one bold
+      black question mark '?', holds, then fades. MILO'S MOUTH
+      STAYS CLOSED. Wide two-shot. World stays solid.
+    audio: >-
+      Birds chirping softly. Distant sprinkler. A faint fabric
+      rustle as PIP raises her hand. A tiny soft cartoon 'pop'
+      as the ? bubble appears. NO VOICES. NO DIALOGUE.
+
+  # ============ WRONG ATTEMPT ============
+  # The single alien-style attempt: Milo stretches across the
+  # lawn looking for "wait." One body-morph, one pose at the end.
+
+  - id: "03"
+    mode: image
+    image_from: "02"
+    duration: 12
+    prompt: >-
+      Same backyard, same morning light, same wide two-shot.
+      MILO tries to physically *go* to wait -- his entire teardrop
+      body stretches FORWARD across the lawn into a long thin
+      elastic mint-green noodle, his body sailing past the
+      kiddie pool, past the gnome, all the way to the white
+      picket fence at the far end of the yard. His one big eye
+      is at the very front of the stretch. The rest of his body
+      is a thin wobbling bridge across the grass. Pastel
+      after-images of the stretching shape trail behind him.
+      MILO'S MOUTH STAYS CLOSED. PIP stands motionless on the
+      patio in the foreground, juice box paused at her side,
+      deadpan eyebrows raised half a millimetre, MOUTH CLOSED.
+    audio: >-
+      Long elastic cartoon "boooooing!" as he stretches across
+      the yard, a soft "doink" as his eye bumps gently against
+      the picket fence. Birds chirping softly. NO VOICES. NO
+      DIALOGUE.
+
+  # ============ BECOMES THE CONCEPT ============
+  # Patience IS holding still while the world moves. One body
+  # snaps back to default; the only animating thing is a falling
+  # yellow leaf that takes the whole shot to drift down.
+
+  - id: "04"
+    mode: image
+    image_from: "03"
+    duration: 14
+    prompt: >-
+      Same backyard, same morning light, same wide two-shot.
+      MILO has snapped back from his forward-stretch into his
+      default teardrop form on the lawn beside the kiddie pool,
+      and now he holds *perfectly still* -- completely motionless,
+      antennae frozen mid-position, big expressive eye held wide
+      and unblinking, no quiver. He is a small mint-green statue
+      of himself. MILO'S MOUTH STAYS CLOSED. The only thing
+      moving in the entire frame is one single yellow leaf
+      drifting slowly down through the air past him from
+      upper-left to lower-right, taking the full duration to
+      fall. PIP stands motionless on the patio in the foreground
+      watching, juice box paused at her side, MOUTH CLOSED.
+      World stays perfectly solid.
+    audio: >-
+      Suburban morning ambience continues: birds, distant
+      sprinkler, soft breeze. A single dry rustle as the yellow
+      leaf passes. NO VOICES. NO DIALOGUE.
+
+  # ============ QUIET PAYOFF ============
+  # The insight: a small mint-green ❤️ thought-bubble pops above
+  # MILO and fades. PIP turns and walks back into the house --
+  # this is critical because shot 06 needs her gone from the seed.
+
+  - id: "05"
+    mode: image
+    image_from: "04"
+    duration: 10
+    prompt: >-
+      Same backyard, same morning light. MILO un-freezes -- his
+      antennae give one slow re-quiver, he settles back into
+      default teardrop form. A small mint-green cartoon
+      thought-bubble pops above MILO's head containing a single
+      bright red heart '❤️', holds for two beats, then fades
+      gently. MILO'S MOUTH STAYS CLOSED. PIP, who has been
+      motionless on the patio, turns calmly and walks fully
+      INTO the house through the open sliding door. The door
+      then CLOSES BEHIND HER until it is fully shut. By the end
+      of this shot the patio is EMPTY: no Pip, no ponytail, no
+      heel, no juice box visible. The closed door is plain dark
+      glass reflecting the sky.
+    audio: >-
+      A faint mint shimmer as MILO un-freezes. A tiny soft
+      cartoon 'pop' as the heart bubble appears. Bare feet
+      padding, then the sliding glass door rumbling slowly
+      closed and clicking shut. NO VOICES. NO DIALOGUE.
+
+  # ============ HAND-OFF FRAME (seed for Day 2) ============
+
+  - id: "06"
+    mode: image
+    image_from: "05"
+    duration: 9
+    prompt: >-
+      Same backyard. Camera pulls back to a clean stable wide
+      shot. Sky shifted to mid-morning: bright pale blue, soft
+      yellow sun, a few small cumulus clouds. Sliding glass door
+      fully shut, plain dark glass reflecting the sky, no figure
+      visible behind it. MILO sits quietly in his default form
+      (mint-green teardrop, two wobbly antennae, one large
+      expressive eye, NO MOUTH, no drift) on the lawn beside the
+      kiddie pool, perfectly still, content. MOUTH CLOSED. The
+      'HOW TO BE HUMAN (SORT OF)' magazine lies open on the
+      grass beside him. Picket fence, gnome, lawn chair in their
+      usual places. Camera locked. Only movement: one small white
+      butterfly drifting slowly left to right. PIP IS NOT IN
+      FRAME ANYWHERE -- not on the lawn, not on the patio, not
+      behind the door. Only MILO and the props.
+    audio: >-
+      Suburban mid-morning ambience: birds, distant sprinkler,
+      very soft breeze. NO VOICES. NO DIALOGUE.

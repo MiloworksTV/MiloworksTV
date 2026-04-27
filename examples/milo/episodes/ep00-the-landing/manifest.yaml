@@ -1,0 +1,248 @@
+slug: ep00-the-landing
+title: "Milo -- Ep 0: The Landing"
+logline: >-
+  A 9-year-old girl reads a magazine in her backyard. Something
+  thumps down beside her: a small mint-green alien, dazed in a
+  fresh lawn-dent. She gives him exactly one millimeter of
+  attention, lowers her magazine, gets up, hands him the magazine
+  she was reading -- 'HOW TO BE HUMAN (SORT OF)' -- places it
+  open on the grass at his feet, walks back inside without looking
+  back, closes the door. Twilight. He starts reading.
+aspect_ratio: "16:9"
+resolution: "720p"
+
+# Cross-episode chain. Day 1 seeds shot 01 from this episode's
+# scene 06 last_frame.png (Milo alone in his small crater on the
+# lawn at twilight, magazine open in front of him, Pip gone, door
+# closed). The stitch step copies scenes/06/last_frame.png to
+# output/last_frame.png.
+handoff_scene: "06"
+
+# Post-render score. Stitch replaces the concatenated video's
+# model-baked audio with this track entirely. See music/README.md.
+music:
+  track: satie-gymnopedie-1
+  volume_db: -2
+  fade_in_s: 1.5
+  fade_out_s: 3.0
+
+# Pilot design notes (writers' room -- not read by the runner):
+#
+# Round 6: the user's actual ask. Round 5 named the episode 'The
+# Landing' but never showed one, and treated Milo and Pip as if
+# they already knew each other. Round 6 fixes both:
+#
+# 1. The episode is structurally a FIRST CONTACT story. Pip is
+#    home in HER garden first. Milo arrives during the episode.
+#    They meet for the first time on screen.
+#
+# 2. We actually render the landing -- not as a falling-body
+#    animation (the model fails on action verbs), but as a chain
+#    of cartoon visual tropes the model handles well: a thin
+#    bright sky-streak descends with motion lines (shot 02), then
+#    impacts in a dust-poof cloud which clears to reveal Milo
+#    standing in a fresh small lawn-dent (shot 03). The cinematic
+#    grammar of arrival.
+#
+# 3. Pip's reaction is the show's tonal anchor: she has
+#    'stray-cat indifference' to the alien. She tracks the streak
+#    sideways with her eyes only (no head movement), turns her
+#    head deadpan when he is revealed, sits up calmly, walks over
+#    without urgency, hands him her magazine matter-of-factly,
+#    and leaves without looking back. Her face stays flat the
+#    entire pilot -- no smile, no eyebrow lift, no surprise. The
+#    KIND act (giving the manual) is in the gesture, not the
+#    affect. This is the joke and the heart of the show.
+#
+# 4. The magazine cover MUST be readable mid-shot in scene 05.
+#    Round 5 lesson: the model prioritized Pip's canonical juice
+#    box over the per-shot magazine prop. Fix: NO juice box
+#    mentioned in any shot of this pilot, and Pip holds the
+#    magazine in BOTH hands at chest height during the cover-up
+#    beat -- both hands occupied = no room for a juice box.
+#
+# 5. Six shots, no outro card. The hand-off frame (Milo alone
+#    with his magazine at twilight) is itself the punchline and
+#    the seed for Day 1; we don't need to caption it.
+
+scenes:
+
+  # ============ TITLE CARD ============
+
+  - id: "01"
+    mode: text
+    duration: 4
+    prompt: >-
+      Animated 2D cartoon title card. Solid hot-pink (#FF5FB0)
+      background with thick black outlined chunky bubbly white
+      cartoon text reading 'Milo', bouncing in letter by letter
+      with squash-and-stretch. Beside the title, a tiny silhouette
+      of a mint-green teardrop blob with two wobbly antennae morphs
+      playfully between a teardrop, a heart, and a question mark,
+      then settles back to a teardrop. Final hold with the title
+      centered.
+    audio: >-
+      Soft cartoon whoosh as letters land. NO VOICES. NO DIALOGUE.
+
+  # ============ PIP'S GARDEN + SKY STREAK ============
+  # Establishes whose yard this is BEFORE Milo arrives. Pip is
+  # home, doing her own thing, deadpan. The streak comes down --
+  # she tracks it sideways with her eyes only.
+
+  - id: "02"
+    mode: text
+    duration: 10
+    prompt: >-
+      Wide cartoon shot of a 1990s suburban backyard at warm
+      late-afternoon golden hour. Green lawn, white picket fence
+      at back, ceramic gnome with red hat near the fence at left,
+      blue plastic kiddie pool far left, striped folding lawn chair
+      on the patio at right, beige house with sliding glass door
+      OPEN behind the patio. PIP lies flat on her back on the lawn
+      near the center, head propped slightly on a folded jacket,
+      both hands holding a glossy magazine open above her face,
+      reading. She is in her canonical look: 9-year-old girl,
+      chocolate-brown ponytail, striped pastel t-shirt, denim
+      shorts, bare feet, deadpan brown eyes, MOUTH CLOSED. NO
+      JUICE BOX in this shot. MILO IS NOT IN THIS SHOT. Halfway
+      through the shot, in the upper-right of the lavender sky, a
+      single thin bright white starlight streak appears, descending
+      diagonally with comic motion lines and a faint whistling
+      tail, growing larger as it falls toward the lawn just to
+      Pip's left. Pip's eyes flick sideways to track it WITHOUT
+      moving her head, magazine still open above her face. Camera
+      locked.
+    audio: >-
+      Soft cartoon whistling tail of the streak descending.
+      Birds chirping softly, distant sprinkler, faint breeze. NO
+      VOICES. NO DIALOGUE.
+
+  # ============ IMPACT + REVEAL ============
+  # Cartoon impact-poof clears to reveal Milo in a fresh lawn-dent.
+  # Pip turns her head, deadpan. First eye-contact.
+
+  - id: "03"
+    mode: image
+    image_from: "02"
+    duration: 10
+    prompt: >-
+      Same backyard, same wide framing, same golden hour. The
+      streak completes its descent and a bright cartoon dust-poof
+      erupts on the lawn beside Pip: a circular puff of dust,
+      leaves, and small pebbles flying outward. The cloud expands,
+      hangs in the air, then begins to dissipate. As the dust
+      clears, MILO is revealed standing inside a small fresh
+      shallow round lawn-dent (a tiny crater with slightly singed
+      grass around its rim) just left of Pip. Milo is in his
+      exact default form: knee-high mint-green teardrop, two
+      wobbly antennae now CROOKED SIDEWAYS from impact, one large
+      round expressive eye wide and dazed, NO MOUTH. He blinks
+      slowly. By the end of the shot his antennae straighten
+      upright. PIP is in the same pose on the grass beside the
+      crater, magazine slowly lowered onto her chest, head turned
+      to look at Milo with deadpan calm, MOUTH CLOSED. NO surprise
+      on her face. End frame: their first eye-contact -- Milo
+      upright in the crater with antennae straightened, Pip on
+      the grass looking at him impassively. Camera locked.
+    audio: >-
+      Cartoon thump and dust-poof whoosh. Soft scattering of
+      leaves and pebbles. Birds going briefly silent then resuming.
+      Faint distant sprinkler. NO VOICES. NO DIALOGUE.
+
+  # ============ STRAY-CAT ACKNOWLEDGMENT ============
+  # Pip closes her magazine, sits up, stands, walks over without
+  # urgency. Face stays flat the entire shot. Like noticing a
+  # stray cat in the yard.
+
+  - id: "04"
+    mode: image
+    image_from: "03"
+    duration: 10
+    prompt: >-
+      Same backyard, same golden hour, same wide framing. PIP
+      closes the magazine on her chest, then calmly sits up.
+      Without urgency she gets to her feet, magazine in one hand.
+      She walks two casual steps from her spot to the edge of the
+      small crater where MILO stands. Her face stays utterly
+      deadpan throughout: no surprise, no smile, no eyebrow
+      movement, MOUTH CLOSED. She looks down at Milo with the
+      same expression she would use noticing a stray cat in her
+      yard -- mild registration, nothing more. MILO tilts his
+      teardrop body slightly upward toward her, antennae perking
+      up with curious interest, big eye wide. End frame: PIP
+      standing on the lawn at the edge of the crater holding the
+      closed magazine in one hand at her side, looking down at
+      MILO with flat indifference; MILO in the crater looking up
+      at her with curious antennae. Camera locked.
+    audio: >-
+      Soft fabric rustle as Pip sits up and stands. Bare feet
+      padding on the grass. Faint birdsong. Distant sprinkler. NO
+      VOICES. NO DIALOGUE.
+
+  # ============ THE CASUAL HANDOVER ============
+  # The thesis statement of the show. Pip raises the magazine
+  # cover-out matter-of-factly: HOW TO BE HUMAN (SORT OF). Then
+  # places it open on the grass and walks away.
+
+  - id: "05"
+    mode: image
+    image_from: "04"
+    duration: 13
+    prompt: >-
+      Same backyard, same golden hour. PIP raises the glossy
+      magazine in BOTH hands at chest height, COVER FACING MILO
+      AND CAMERA. Cover fills a clear central half of the frame,
+      slightly tilted to camera: bright cream background, bold
+      chunky bubbly black-outlined cartoon letters reading 'HOW
+      TO BE HUMAN (SORT OF)' in the upper two-thirds, small
+      thumbs-up icon below. PIP stays deadpan, MOUTH CLOSED.
+      After two beats holding the cover up, she SQUATS DOWN
+      smoothly beside MILO's crater, lowering the magazine with
+      both hands. She places it OPEN on the grass at MILO's
+      feet, pages up showing cartoon illustrations of a girl, a
+      heart, and a house. As MILO leans over the page, a small
+      mint thought-bubble pops above him with a yellow lightbulb.
+      PIP slowly STANDS BACK UP, one calm motion, deadpan. End
+      frame: PIP upright beside the open magazine, empty hands
+      at her sides, MILO leaning over the page, lightbulb
+      fading. PIP does NOT turn or walk away. Camera locked.
+    audio: >-
+      Soft 'pop' as the lightbulb bubble appears. Faint paper
+      rustle as the magazine settles. Bare feet shifting as Pip
+      squats and rises. Birds, sprinkler. NO VOICES. NO DIALOGUE.
+
+  # ============ HAND-OFF: PIP LEAVES, TWILIGHT, MILO READS ============
+  # Pip walks fully into the house and closes the door, never
+  # looking back. Twilight settles. Milo alone with his magazine.
+  # This last frame is the seed for Day 1.
+
+  # CRITICAL: This scene MUST be image-mode chained from "05".
+  # Plano secuencia is the show's foundational rule -- every
+  # interior scene seeds from the previous scene's last_frame.
+  # Do NOT switch this to mode: text. The chain is the show.
+  - id: "06"
+    mode: image
+    image_from: "05"
+    duration: 12
+    prompt: >-
+      Same backyard, same wide framing. PIP turns calmly 180
+      degrees from MILO, then walks back across the lawn onto
+      the patio with a natural alternating gait, stepping
+      through the open sliding glass door into the house, never
+      looking back. The sliding door slides CLOSED behind her
+      until fully shut. PIP is empty-handed -- NO juice box
+      anywhere in this shot. By mid-shot the patio is empty: no
+      Pip visible. Closed door is plain dark glass. Sky shifts
+      gradually from golden hour to deep twilight: lavender to
+      indigo, first stars, streetlights warming amber along the
+      fence. MILO sits beside the open magazine in default form
+      (mint-green teardrop, two wobbly antennae upright with
+      one slightly curled, one large eye, NO MOUTH), big eye
+      locked DOWN on the magazine page. Camera SLOWLY PUSHES IN
+      toward MILO and magazine in foreground as the sky deepens,
+      so PIP shrinks in the background as she walks. Final
+      tight hold on MILO + magazine.
+    audio: >-
+      Bare feet on grass then patio, soft 'clunk' at threshold.
+      Sliding door rumbling closed, clicking shut. Cricket song
+      rising. Birds quieting. NO VOICES. NO DIALOGUE.
